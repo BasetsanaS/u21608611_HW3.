@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "ChartFromEF";
+}
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #3498db;
+            margin: 10px 0;
+        }
+
+        img {
+            max-width: 100%;
+            border: 5px solid #3498db;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            button[type="submit"]:hover {
+                background-color: #2271b3;
+            }
+    </style>
+</head>
+
+<img src="@Url.Action("ChartFromEF")" alt="Generated Chart" />
+
+<form action="@Url.Action("SaveReport")" method="post">
+    <label for="filename">Filename:</label>
+    <input type="text" id="filename" name="filename" required>
+
+    <label for="filetype">File Type:</label>
+    <select id="filetype" name="filetype" required>
+        <option value="png">PNG</option>
+        <option value="jpg">JPG</option>
+        <option value="jpeg">JPEG</option>
+        <option value="gif">GIF</option>
+    </select>
+
+    <button type="submit">Save Report</button>
+</form>
+
+
+
+
+

@@ -1,0 +1,177 @@
+﻿@model u21608611_HW3.Models.StudentBookModel
+@{
+    ViewBag.Title = "StudentBookModel";
+}
+
+<style>
+    body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .btn {
+        background-color: #27898b;
+        color: white;
+        border-radius: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #27898b;
+        color: #27898b;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .text-end {
+        text-align: right;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col">
+                <a href="@Url.Action("Create", "books")" class="btn">Books</a>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Book ID</th>
+                        <th>Name</th>
+                        <th>Page Count</th>
+                        <th>Point</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.bookData.Skip(0).Take(10))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.bookId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.pagecount)</td>
+                            <td>@Html.DisplayFor(modelItem => item.point)</td>
+                            <td class="text-end">
+                                <a href="@Url.Action("Edit", "books", new { id = item.bookId })">Edit</a>
+                                <a href="@Url.Action("Details", "books", new { id = item.bookId })">Details</a>
+                                <a href="@Url.Action("Delete", "books", new { id = item.bookId })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+        <br />
+
+        <div class="col-md-12">
+            <div class="col">
+                <a href="@Url.Action("Create", "students")" class="btn">Students</a>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Birthdate</th>
+                        <th>Gender</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.studentData.Skip(0).Take(10))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.studentId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.surname)</td>
+                            <td>@Html.DisplayFor(modelItem => item.birthdate)</td>
+                            <td>@Html.DisplayFor(modelItem => item.gender)</td>
+                            <td class="text-end">
+                                <a href="@Url.Action("Edit", "students", new { id = item.studentId })">Edit</a>
+                                <a href="@Url.Action("Details", "students", new { id = item.studentId })">Details</a>
+                                <a href="@Url.Action("Delete", "students", new { id = item.studentId })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">My To Do List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $(".edit-link, .edit-link-in-modal").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+
+        $("#modal-content").on("submit", "form", function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr("action");
+            var formData = form.serialize();
+
+            $.post(url, formData, function (data) {
+                $("#myModal").modal("hide");
+                location.reload();
+            });
+        });
+
+        $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+    });
+</script>

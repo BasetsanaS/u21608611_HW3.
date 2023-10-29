@@ -1,0 +1,201 @@
+﻿@model u21608611_HW3.Models.Maintain
+
+@{
+    ViewBag.Title = "Maintain";
+}
+<style>
+    body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="col">
+                <a href="@Url.Action("Create", "authors")" class="btn btn-lg" style="border-radius: 20px; background-color:#27898b; color:white">Authors</a>
+            </div>
+
+            <table class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.authorData.FirstOrDefault().authorId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.authorData.FirstOrDefault().name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.authorData.FirstOrDefault().surname)
+                        </th>
+
+                        <th class="text-end">Actions</th>
+                    </tr>
+                <thead>
+                <tbody>
+                    @foreach (var item in Model.authorData.Skip(0).Take(10))
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.authorId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.surname)
+                            </td>
+                            <td class="text-end">
+                                <a href="@Url.Action("Edit", "authors", new { id = item.authorId })">Edit</a>
+                                <a href="@Url.Action("Details", "authors", new { id = item.authorId })">Details</a>
+                                <a href="@Url.Action("Delete", "authors", new { id = item.authorId })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                <tbody>
+            </table>
+        </div>
+
+        <br />
+
+
+
+        <div class="col-md-6">
+            <div class="col">
+                <a href="@Url.Action("Create", "types")" class="btn btn-lg" style="border-radius: 20px; background-color:#27898b; color:white">Types</a>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type ID</th>
+                        <th>Name</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.typeData.Skip(0).Take(10))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.typeId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.name)</td>
+                            <td class="text-end">
+                                <a href="@Url.Action("Edit", "types", new { id = item.typeId })">Edit</a>
+                                <a href="@Url.Action("Details", "types", new { id = item.typeId })">Details</a>
+                                <a href="@Url.Action("Delete", "types", new { id = item.typeId })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col">
+            <a href="@Url.Action("Create", "borrows")" class="btn btn-lg" style="border-radius: 20px; background-color:#27898b; color:white">Borrows</a>
+        </div>
+
+        <table class="table" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.borrowData.FirstOrDefault().borrowId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.borrowData.FirstOrDefault().studentId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.borrowData.FirstOrDefault().bookId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.borrowData.FirstOrDefault().takenDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.borrowData.FirstOrDefault().broughtDate)
+                    </th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.borrowData.Skip(0).Take(10))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.borrowId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.studentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.bookId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.takenDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.broughtDate)
+                        </td>
+                        <td class="text-end">
+                            <a href="@Url.Action("Edit", "borrows", new { id = item.borrowId })">Edit</a>
+                            <a href="@Url.Action("Details", "borrows", new { id = item.borrowId })">Details</a>
+                            <a href="@Url.Action("Delete", "borrows", new { id = item.borrowId })">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">My To Do List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $(".edit-link, .edit-link-in-modal").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+
+        $("#modal-content").on("submit", "form", function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr("action");
+            var formData = form.serialize();
+
+            $.post(url, formData, function (data) {
+                $("#myModal").modal("hide");
+                location.reload();
+            });
+        });
+
+        $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+    });
+</script>
